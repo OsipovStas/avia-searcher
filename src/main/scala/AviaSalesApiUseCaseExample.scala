@@ -12,9 +12,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 object AviaSalesApiUseCaseExample {
 
-  // Instantiation of the client
-  // In a real-life application, you would instantiate one, share it everywhere,
-  // and call wsClient.close() when you're done
+
   def main(args: Array[String]): Unit = {
     val wsClient: NingWSClient = NingWSClient()
     wsClient

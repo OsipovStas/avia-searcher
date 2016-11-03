@@ -3,7 +3,7 @@ package com.epam.bigdata.osipov.avia
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
-case class Price(value: Double, departure: String, destination: String)
+case class Price(value: Double, origin: String, destination: String)
 
 object Price {
 

@@ -5,6 +5,7 @@ import org.apache.spark.streaming.receiver.Receiver
 import play.api.libs.json.{JsArray, Json}
 import play.api.libs.ws.WSResponse
 import play.api.libs.ws.ning.NingWSClient
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class AviaSalesReceiver extends Receiver[Price](StorageLevel.MEMORY_AND_DISK_2) {
 
@@ -17,7 +18,7 @@ class AviaSalesReceiver extends Receiver[Price](StorageLevel.MEMORY_AND_DISK_2) 
       override def run() {
         while(true) {
           receive()
-          Thread.sleep(300000)
+          Thread.sleep(5000)
         }
       }
     }.start()

@@ -12,8 +12,8 @@ libraryDependencies += "org.apache.spark" % "spark-core_2.10" % "1.6.2" % "provi
 //libraryDependencies += "org.apache.spark" % "spark-sql_2.10" % "1.6.2" % "provided"
 //libraryDependencies += "org.apache.spark" % "spark-mllib_2.10" % "1.6.2" % "provided"
 libraryDependencies += "org.apache.spark" % "spark-streaming_2.10" % "1.6.2" % "provided"
-//libraryDependencies += "org.apache.spark" % "spark-streaming-kafka_2.10" % "1.6.2" % "provided"
-//libraryDependencies += "org.apache.kafka" % "kafka-clients" % "0.8.2.1"
+libraryDependencies += "org.apache.spark" % "spark-streaming-kafka_2.10" % "1.6.2" % "provided"
+libraryDependencies += "org.apache.kafka" % "kafka-clients" % "0.8.2.1"
 //libraryDependencies += "org.apache.spark" % "spark-hive_2.10" % "1.6.2" % "provided"
 
 
