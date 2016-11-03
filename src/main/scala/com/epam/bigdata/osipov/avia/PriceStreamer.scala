@@ -14,12 +14,16 @@ object PriceStreamer {
 
     ssc.receiverStream(new AviaSalesReceiver).foreachRDD {
       rdd =>
-        val k = createKafkaProducer()
         rdd.foreach {
           case p @ Price(v, o, r) =>
+            val k = createKafkaProducer()
             k.send(new ProducerRecord[String, String]("prices", p.toString))
         }
     }
+
+    ssc.start()
+
+    ssc.awaitTermination()
   }
 
   def createKafkaProducer() = {

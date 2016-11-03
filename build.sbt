@@ -1,4 +1,4 @@
-name := "spark-hw-sbt"
+name := "avia-searcher"
 
 version := "1.0"
 
@@ -7,6 +7,11 @@ scalaVersion := "2.10.6"
 parallelExecution in Test := false
 
 resolvers += "clojars.org" at "http://clojars.org/repo"
+
+assemblyMergeStrategy in assembly := {
+  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+  case x => MergeStrategy.first
+}
 
 libraryDependencies += "org.apache.spark" % "spark-core_2.10" % "1.6.2" % "provided"
 //libraryDependencies += "org.apache.spark" % "spark-sql_2.10" % "1.6.2" % "provided"
