@@ -1,23 +1,13 @@
+import com.epam.bigdata.osipov.avia.Price
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsArray, _}
 import play.api.libs.ws.ning.NingWSClient
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-case class Price(value: Double, departure: String, destination: String)
 
-object Price {
 
-  implicit val jsonFormat = {
-    val jsonDescription =
-      (__ \ "value").format[Double] and
-        (__ \ "origin").format[String] and
-        (__ \ "destination").format[String]
 
-    jsonDescription(Price.apply, unlift(Price.unapply))
-  }
-
-}
 
 
 object AviaSalesApiUseCaseExample {
@@ -26,7 +16,7 @@ object AviaSalesApiUseCaseExample {
   // In a real-life application, you would instantiate one, share it everywhere,
   // and call wsClient.close() when you're done
   def main(args: Array[String]): Unit = {
-    val wsClient = NingWSClient()
+    val wsClient: NingWSClient = NingWSClient()
     wsClient
       .url("http://api.travelpayouts.com/v2/prices/latest")
       .withQueryString(
