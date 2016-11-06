@@ -1,8 +1,11 @@
-import com.epam.bigdata.osipov.avia.Price
+import java.util.Calendar
+
+import com.epam.bigdata.osipov.avia.{Utils, PriceStreamer, Price}
+import org.apache.kafka.clients.producer.ProducerRecord
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsArray, _}
 import play.api.libs.ws.ning.NingWSClient
-
+import Utils._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 
@@ -12,9 +15,19 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 object AviaSalesApiUseCaseExample {
 
+  var m: Set[Price] = Set()
+  val wsClient: NingWSClient = NingWSClient()
+  val producer = createKafkaProducer()
 
   def main(args: Array[String]): Unit = {
-    val wsClient: NingWSClient = NingWSClient()
+    while(true) {
+      makeRequest()
+      println("Next request")
+      Thread.sleep(60000)
+    }
+  }
+
+  def makeRequest() = {
     wsClient
       .url("http://api.travelpayouts.com/v2/prices/latest")
       .withQueryString(
@@ -31,10 +44,13 @@ object AviaSalesApiUseCaseExample {
         if (!(200 to 299).contains(wsResponse.status)) {
           sys.error(s"Received unexpected status ${wsResponse.status} : ${wsResponse.body}")
         }
-        Json.parse(wsResponse.body).\("data").get.asInstanceOf[JsArray].value.foreach(v => println(s"Received ticket ${Json.fromJson[Price](v).get}"))
-        println(s"The response header Content-Length was ${wsResponse.header("Content-Length")}")
-        wsClient.close()
+        Json.parse(wsResponse.body).\("data").get.asInstanceOf[JsArray].value.map(v => Json.fromJson[Price](v).get).foreach{
+          case p if !m.contains(p)=>
+            producer.send(new ProducerRecord[String, String]("prices", s"Received new price $p at ${Calendar.getInstance().getTime}"))
+            m = m + p
+        }
       }
+
   }
 
 }
